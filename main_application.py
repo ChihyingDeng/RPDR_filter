@@ -39,9 +39,9 @@ class MainApplication(tk.Frame):
                 message="Something went wrong, did you select an appropriately filter file?")
             return
 
-        # set the default value of patient ID, date and include 
+        # set the default value of patient ID, date and include
         OPTIONS = pd.read_csv(
-                    self.filter_fname).columns.values.tolist()
+            self.filter_fname).columns.values.tolist()
         self.patient_id_entry.set(OPTIONS[0])
         self.date_entry.set(OPTIONS[1])
         self.include_entry.set('All')
@@ -55,8 +55,9 @@ class MainApplication(tk.Frame):
             self.date_entry.set('procedure_date')
         else:
             for o in OPTIONS:
-                if 'date' in o.lower(): 
-                    self.date_entry.set(o); break
+                if 'date' in o.lower():
+                    self.date_entry.set(o)
+                    break
         # load the columns to drop down menu
         try:
             self.patient_id_entry_menu = tk.OptionMenu(
@@ -97,7 +98,7 @@ class MainApplication(tk.Frame):
                     title="Error",
                     message="Please enter the integer in before days and/or after days")
                 return
-            if not days_before or not days_after: 
+            if not days_before or not days_after:
                 messagebox.showerror(
                     title="Error",
                     message="Please enter the before days and/or after days")
@@ -110,11 +111,17 @@ class MainApplication(tk.Frame):
             patient_column = self.patient_id_entry.get()
             date_column = self.date_entry.get()
             include_column = self.include_entry.get()
-            empi_to_date_range = get_empi_to_date_range(self.filter_fname, patient_column, date_column, include_column, days_before, days_after)
-            if empi_to_date_range == 'error': 
+            empi_to_date_range = get_empi_to_date_range(
+                self.filter_fname,
+                patient_column,
+                date_column,
+                include_column,
+                days_before,
+                days_after)
+            if empi_to_date_range == 'error':
                 messagebox.showerror(
-                        title="Error",
-                        message="Something went wrong, did you select the correct columns?")
+                    title="Error",
+                    message="Something went wrong, did you select the correct columns?")
             else:
                 msg = filter_rpdr_file(self.input_fname, empi_to_date_range, days_before, days_after)
 
@@ -124,13 +131,12 @@ class MainApplication(tk.Frame):
 
         if msg == 'error':
             messagebox.showerror(
-                    title="Error",
-                    message="Something went wrong, did you select an appropriately formatted RPDR file?")
+                title="Error",
+                message="Something went wrong, did you select an appropriately formatted RPDR file?")
         elif msg == 'done':
             messagebox.showinfo(
-                    title="Done",
-                    message="File saved!!")
-
+                title="Done",
+                message="File saved!!")
 
     def setup_interface(self, root):
         # Define fonts
@@ -256,6 +262,3 @@ class MainApplication(tk.Frame):
             bg=self.bg_color,
             command=self.on_run_function)
         self.run_filter_button.grid(column=1, row=8, columnspan=3, sticky='nswe')
-
-
-
